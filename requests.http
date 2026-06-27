@@ -1,0 +1,214 @@
+@baseUrl = http://localhost:3000
+
+### Health check
+GET {{baseUrl}}/health
+
+### Swagger docs
+GET {{baseUrl}}/api-docs
+
+### Register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "123456"
+}
+
+### Login and save token
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "123456"
+}
+
+> {%
+    client.global.set("accessToken", response.body.accessToken);
+%}
+
+### Get all announcements
+GET {{baseUrl}}/announcements
+
+### Create announcement with image
+POST {{baseUrl}}/announcements
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="title"
+
+Продам велосипед
+--WebAppBoundary
+Content-Disposition: form-data; name="description"
+
+Trek у відмінному стані
+--WebAppBoundary
+Content-Disposition: form-data; name="price"
+
+8500
+--WebAppBoundary
+Content-Disposition: form-data; name="category"
+
+sale
+--WebAppBoundary
+Content-Disposition: form-data; name="contactInfo"
+
+veloman@gmail.com
+--WebAppBoundary
+Content-Disposition: form-data; name="image"; filename="sample-image.png"
+Content-Type: image/png
+
+< ./sample-image.png
+--WebAppBoundary--
+
+### Create announcement without image
+POST {{baseUrl}}/announcements
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="title"
+
+Оголошення без фото
+--WebAppBoundary
+Content-Disposition: form-data; name="description"
+
+Тестове оголошення без картинки
+--WebAppBoundary
+Content-Disposition: form-data; name="price"
+
+100
+--WebAppBoundary
+Content-Disposition: form-data; name="category"
+
+sale
+--WebAppBoundary
+Content-Disposition: form-data; name="contactInfo"
+
+test@gmail.com
+--WebAppBoundary--
+
+### Update announcement with image
+PATCH {{baseUrl}}/announcements/1
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="title"
+
+Оновлена назва
+--WebAppBoundary
+Content-Disposition: form-data; name="image"; filename="sample-image.png"
+Content-Type: image/png
+
+< ./sample-image.png
+--WebAppBoundary--
+
+### CORS allowed origin test
+GET {{baseUrl}}/announcements
+Origin: http://localhost:5173
+
+### CORS denied origin test - should return 403
+GET {{baseUrl}}/announcements
+Origin: http://evil.com
+
+### Rate limit test 1
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 2
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 3
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 4
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 5
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 6
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 7
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 8
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 9
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 10
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
+
+### Rate limit test 11 should return 429
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "wrong-password"
+}
